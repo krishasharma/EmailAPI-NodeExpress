@@ -1,0 +1,43 @@
+{
+  "name": "cse186-assignment5",
+  "version": "2.0.0",
+  "description": "CSE186 Assignment 5 - Node.js & Express",
+  "author": "David Harrison <dcharris@ucsc.edu>",
+  "license": "UNLICENSED",
+  "repository": "none",
+  "devDependencies": {
+    "bestzip": "*",
+    "eslint": "8.57.0",
+    "eslint-config-google": "*",
+    "jest": "*",
+    "nodemon": "*",
+    "supertest": "*"
+  },
+  "dependencies": {
+    "express": "*",
+    "express-openapi-validator": "*",
+    "js-yaml": "*",
+    "swagger-ui-express": "*",
+    "uuid": "*"
+  },
+  "scripts": {
+    "lint": "eslint src test --ext .js --no-inline-config --max-warnings 0",
+    "start": "nodemon src/server.js",
+    "test": "jest --runInBand --testTimeout=2000 --coverage --verbose --forceExit --detectOpenHandles test/advanced.test.js test/stretch.test.js",
+    "zip": "bestzip CSE186-Assignment5-Submission.zip src/* test/*.js test/*.test.js api/*"
+  },
+  "eslintConfig": {
+    "extends": [
+      "google"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 15
+    },
+    "rules": {
+      "indent": [
+        "warn",
+        2
+      ]
+    }
+  }
+}

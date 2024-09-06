@@ -1,0 +1,138 @@
+#######################################################################
+#
+# Copyright (C) 2020-2024 David C. Harrison. All right reserved.
+#
+# You may not use, distribute, publish, or modify this code without
+# the express written permission of the copyright holder.
+#
+#######################################################################
+openapi: 3.0.3
+info:
+  description: CSE186 Assignment 5
+  version: 0.1.0
+  title: CSE186 Assignment 5
+servers:
+  - url: http://localhost:3010
+paths:
+  /v0/mail:
+    get:
+      description: Returns all EMail
+      parameters:
+        - in: query
+          name: mailbox
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Email Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    mail:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Email'
+        '404':
+          description: Not Found
+    post:
+      description: Saves a new email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewEmail'
+      responses:
+        '201':
+          description: Email created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Email'
+        '400':
+          description: Invalid email
+  /v0/mail/{id}:
+    get:
+      description: Returns the email identified by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Email found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Email'
+        '404':
+          description: Not Found
+    put:
+      description: Moves the email identified by id to the specified mailbox
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: mailbox
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Email moved
+        '404':
+          description: Email not found
+        '400':
+          description: Mailbox not specified
+        '409':
+          description: Cannot move to the sent mailbox
+components:
+  schemas:
+    Email:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        to-name:
+          type: string
+        to-email:
+          type: string
+          format: email
+        from-name:
+          type: string
+        from-email:
+          type: string
+          format: email
+        subject:
+          type: string
+        received:
+          type: string
+          format: date-time
+        content:
+          type: string
+    NewEmail:
+      type: object
+      properties:
+        to-name:
+          type: string
+        to-email:
+          type: string
+          format: email
+        subject:
+          type: string
+        content:
+          type: string
